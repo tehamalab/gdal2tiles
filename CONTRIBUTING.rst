@@ -38,8 +38,8 @@ and "help wanted" is open to whoever wants to implement it.
 Write Documentation
 ~~~~~~~~~~~~~~~~~~~
 
-GDAL2Tiles as library could always use more documentation, whether as part of the
-official GDAL2Tiles as library docs, in docstrings, or even on the web in blog posts,
+gdal2tiles could always use more documentation, whether as part of the
+official gdal2tiles docs, in docstrings, or even on the web in blog posts,
 articles, and such.
 
 Submit Feedback

@@ -1,20 +1,20 @@
 .. highlight:: shell
 
-============
-Installation
-============
+==========================
+Other installation options
+==========================
 
 
 Stable release
 --------------
 
-To install GDAL2Tiles as library, run this command in your terminal:
+To install gdal2tiles library, run this command in your terminal:
 
 .. code-block:: console
 
     $ pip install gdal2tiles
 
-This is the preferred method to install GDAL2Tiles as library, as it will always install the most recent stable release.
+This is the preferred method to install gdal2tiles, as it will always install the most recent stable release.
 
 If you don't have `pip`_ installed, this `Python installation guide`_ can guide
 you through the process.
@@ -26,7 +26,7 @@ you through the process.
 From sources
 ------------
 
-The sources for GDAL2Tiles as library can be downloaded from the `Github repo`_.
+The sources for gdal2tiles can be downloaded from the `Github repo`_.
 
 You can either clone the public repository:
 

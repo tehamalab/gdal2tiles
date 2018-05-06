@@ -1,5 +1,5 @@
-Welcome to GDAL2Tiles as library's documentation!
-======================================
+Welcome to gdal2tile
+====================
 
 .. toctree::
    :maxdepth: 2
@@ -7,7 +7,6 @@ Welcome to GDAL2Tiles as library's documentation!
 
    readme
    installation
-   usage
    modules
    contributing
    authors
