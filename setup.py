@@ -32,7 +32,7 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
     ],
-    description="GDAL gdal2tiles.py script packaged as a Python library.",
+    description="A python library for generating map tiles based on gdal2tiles.py script.",
     install_requires=requirements,
     license="MIT license",
     long_description=readme + '\n\n' + history,

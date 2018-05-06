@@ -1,6 +1,6 @@
-=======================
-GDAL2Tiles as a library
-=======================
+==================
+GDAL2Tiles Python
+==================
 
 
 .. image:: https://img.shields.io/pypi/v/gdal2tiles.svg
@@ -14,10 +14,13 @@ GDAL2Tiles as a library
         :alt: Documentation Status
 
 
-GDAL gdal2tiles.py script packaged as a Python library.
+A python library for generating map tiles based on gdal2tiles.py_ script.
 
 
 Dependancies
 ------------
 
 - GDAL python bindings.
+
+
+.. _gdal2tiles.py: http://www.gdal.org/gdal2tiles.html
