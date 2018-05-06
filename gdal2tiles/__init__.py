@@ -7,4 +7,4 @@ __email__ = 'developers@tehamalab.com'
 __version__ = '0.1.0'
 
 
-from gdal2tiles import *  # noqa
+from .gdal2tiles import *  # noqa

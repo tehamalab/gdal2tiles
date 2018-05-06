@@ -59,7 +59,8 @@ except Exception:
     # 'antialias' resampling is not available
     pass
 
-__version__ = "$Id$"
+from .utils import recursive_attrdict
+
 
 resampling_list = ('average', 'near', 'bilinear', 'cubic', 'cubicspline', 'lanczos', 'antialias')
 profile_list = ('mercator', 'geodetic', 'raster')
@@ -102,6 +103,27 @@ Class is available under the open-source GDAL license (www.gdal.org).
 """
 
 MAXZOOMLEVEL = 32
+
+
+DEFAULT_GDAL2TILES_OPTIONS = {
+    'verbose': False,
+    'title': '',
+    'profile': 'mercator',
+    'url': '',
+    'resampling': 'average',
+    's_srs': None,
+    'zoom': None,
+    'resume': False,
+    'srcnodata': None,
+    'tmscompatible': None,
+    'quiet': False,
+    'kml': False,
+    'webviewer': 'all',
+    'copyright': '',
+    'googlekey': 'INSERT_YOUR_KEY_HERE',
+    'bingkey': 'INSERT_YOUR_KEY_HERE',
+    'nb_processes': 1
+}
 
 
 class GlobalMercator(object):
@@ -1140,101 +1162,13 @@ def create_overview_tiles(tile_job_info, output_folder, options):
                     progress_bar.log_progress()
 
 
-def optparse_init():
-    """Prepare the option parser for input (argv)"""
+def process_options(input_file, output_folder, options={}):
 
-    from optparse import OptionParser, OptionGroup
-    usage = "Usage: %prog [options] input_file [output]"
-    p = OptionParser(usage, version="%prog " + __version__)
-    p.add_option("-p", "--profile", dest='profile',
-                 type='choice', choices=profile_list,
-                 help=("Tile cutting profile (%s) - default 'mercator' "
-                       "(Google Maps compatible)" % ",".join(profile_list)))
-    p.add_option("-r", "--resampling", dest="resampling",
-                 type='choice', choices=resampling_list,
-                 help="Resampling method (%s) - default 'average'" % ",".join(resampling_list))
-    p.add_option('-s', '--s_srs', dest="s_srs", metavar="SRS",
-                 help="The spatial reference system used for the source input data")
-    p.add_option('-z', '--zoom', dest="zoom",
-                 help="Zoom levels to render (format:'2-5' or '10').")
-    p.add_option('-e', '--resume', dest="resume", action="store_true",
-                 help="Resume mode. Generate only missing files.")
-    p.add_option('-a', '--srcnodata', dest="srcnodata", metavar="NODATA",
-                 help="NODATA transparency value to assign to the input data")
-    p.add_option('-d', '--tmscompatible', dest="tmscompatible", action="store_true",
-                 help=("When using the geodetic profile, specifies the base resolution "
-                       "as 0.703125 or 2 tiles at zoom level 0."))
-    p.add_option("-v", "--verbose",
-                 action="store_true", dest="verbose",
-                 help="Print status messages to stdout")
-    p.add_option("-q", "--quiet",
-                 action="store_true", dest="quiet",
-                 help="Disable messages and status to stdout")
-    p.add_option("--processes",
-                 dest="nb_processes",
-                 type='int',
-                 help="Number of processes to use for tiling")
-
-    # KML options
-    g = OptionGroup(p, "KML (Google Earth) options",
-                    "Options for generated Google Earth SuperOverlay metadata")
-    g.add_option("-k", "--force-kml", dest='kml', action="store_true",
-                 help=("Generate KML for Google Earth - default for 'geodetic' profile and "
-                       "'raster' in EPSG:4326. For a dataset with different projection use "
-                       "with caution!"))
-    g.add_option("-n", "--no-kml", dest='kml', action="store_false",
-                 help="Avoid automatic generation of KML files for EPSG:4326")
-    g.add_option("-u", "--url", dest='url',
-                 help="URL address where the generated tiles are going to be published")
-    p.add_option_group(g)
-
-    # HTML options
-    g = OptionGroup(p, "Web viewer options",
-                    "Options for generated HTML viewers a la Google Maps")
-    g.add_option("-w", "--webviewer", dest='webviewer', type='choice', choices=webviewer_list,
-                 help="Web viewer to generate (%s) - default 'all'" % ",".join(webviewer_list))
-    g.add_option("-t", "--title", dest='title',
-                 help="Title of the map")
-    g.add_option("-c", "--copyright", dest='copyright',
-                 help="Copyright for the map")
-    g.add_option("-g", "--googlekey", dest='googlekey',
-                 help="Google Maps API key from http://code.google.com/apis/maps/signup.html")
-    g.add_option("-b", "--bingkey", dest='bingkey',
-                 help="Bing Maps API key from https://www.bingmapsportal.com/")
-    p.add_option_group(g)
-
-    p.set_defaults(verbose=False, profile="mercator", kml=False, url='',
-                   webviewer='all', copyright='', resampling='average', resume=False,
-                   googlekey='INSERT_YOUR_KEY_HERE', bingkey='INSERT_YOUR_KEY_HERE',
-                   processes=1)
-
-    return p
-
-
-def process_args(argv):
-    parser = optparse_init()
-    options, args = parser.parse_args(args=argv)
-
-    # Args should be either an input file OR an input file and an output folder
-    if (len(args) == 0):
-        exit_with_error("You need to specify at least an input file as argument to the script")
-    if (len(args) > 2):
-        exit_with_error("Processing of several input files is not supported.",
-                        "Please first use a tool like gdal_vrtmerge.py or gdal_merge.py on the "
-                        "files: gdal_vrtmerge.py -o merged.vrt %s" % " ".join(args))
-
-    input_file = args[0]
-    if not os.path.isfile(input_file):
-        exit_with_error("The provided input file %s does not exist or is not a file" % input_file)
-
-    if len(args) == 2:
-        output_folder = args[1]
-    else:
-        output_folder = os.path.basename(input_file)
-
+    _options = DEFAULT_GDAL2TILES_OPTIONS.copy()
+    _options.update(options)
+    options = recursive_attrdict(_options)
     options = options_post_processing(options, input_file, output_folder)
-
-    return input_file, output_folder, options
+    return options
 
 
 def options_post_processing(options, input_file, output_folder):
@@ -2856,11 +2790,13 @@ def get_tile_swne(tile_job_info, options):
     return tile_swne
 
 
-def single_threaded_tiling(input_file, output_folder, options):
+def single_threaded_tiling(input_file, output_folder, **options):
     """
     Keep a single threaded version that stays clear of multiprocessing, for platforms that would not
     support it
     """
+    options = process_options(input_file, output_folder, options)
+
     if options.verbose:
         print("Begin tiles details calc")
     conf, tile_details = worker_tile_details(input_file, output_folder, options)
@@ -2883,7 +2819,9 @@ def single_threaded_tiling(input_file, output_folder, options):
     shutil.rmtree(os.path.dirname(conf.src_file))
 
 
-def multi_threaded_tiling(input_file, output_folder, options):
+def multi_threaded_tiling(input_file, output_folder, **options):
+    options = process_options(input_file, output_folder, options)
+
     nb_processes = options.nb_processes or 1
     (conf_receiver, conf_sender) = Pipe(False)
 
@@ -2923,6 +2861,18 @@ def multi_threaded_tiling(input_file, output_folder, options):
     create_overview_tiles(conf, output_folder, options)
 
     shutil.rmtree(os.path.dirname(conf.src_file))
+
+
+def generate_tiles(input_file, output_folder, **options):
+    if options:
+        nb_processes = options.get('nb_processes') or 1
+    else:
+        nb_processes = 1
+
+    if nb_processes == 1:
+        single_threaded_tiling(input_file, output_folder, options)
+    else:
+        multi_threaded_tiling(input_file, output_folder, options)
 
 
 # vim: set tabstop=4 shiftwidth=4 expandtab:
