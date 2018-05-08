@@ -20,6 +20,17 @@
 #
 import os
 import sys
+from unittest.mock import MagicMock
+
+
+class Mock(MagicMock):
+    @classmethod
+    def __getattr__(cls, name):
+        return MagicMock()
+
+
+MOCK_MODULES = ['osgeo']
+sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 sys.path.insert(0, os.path.abspath('..'))
 
 import gdal2tiles
@@ -47,7 +58,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'GDAL2Tiles as library'
+project = u'gdal2tiles'
 copyright = u"2018, Tehamalab"
 author = u"Tehamalab"
 
@@ -140,7 +151,7 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     (master_doc, 'gdal2tiles',
-     u'GDAL2Tiles as library Documentation',
+     u'gdal2tiles Documentation',
      [author], 1)
 ]
 
@@ -152,7 +163,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, 'gdal2tiles',
-     u'GDAL2Tiles as library Documentation',
+     u'gdal2tiles Documentation',
      author,
      'gdal2tiles',
      'One line description of project.',
