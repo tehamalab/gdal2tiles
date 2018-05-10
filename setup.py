@@ -3,6 +3,7 @@
 
 """The setup script."""
 
+import subprocess
 from setuptools import setup, find_packages
 
 with open('README.rst') as readme_file:
@@ -11,7 +12,22 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = ['GDAL']
+gdal_package = 'GDAL'
+try:
+    gdal_version = subprocess.check_output(
+        'gdal-config --version',
+        stderr=subprocess.STDOUT,
+        shell=True
+    ).decode('utf-8').strip()
+
+    if gdal_version.startswith('1.10'):
+        gdal_package = gdal_package + '==1.10.0'
+    else:
+        gdal_package = '%s==%s' % (gdal_package, gdal_version)
+except subprocess.CalledProcessError:
+    gdal_version = None
+
+requirements = [gdal_package]
 
 setup_requirements = ['pytest-runner', ]
 
