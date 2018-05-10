@@ -14,7 +14,7 @@ gdal2tiles
         :alt: Documentation Status
 
 
-A python library for generating map tiles based on gdal2tiles.py_ script.
+A python library for generating map tiles inspired by gdal2tiles.py_ from GDAL_ project.
 
 
 Dependancies
@@ -62,7 +62,7 @@ In general
 
 .. code-block:: python
 
-    gdal2tiles.generate_tiles(input_file, output_dir, **options)
+    gdal2tiles.generate_tiles(input_file, output_folder, **options)
 
 
 Arguments:
