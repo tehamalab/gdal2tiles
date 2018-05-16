@@ -2921,6 +2921,6 @@ def generate_tiles(input_file, output_folder, **options):
         nb_processes = 1
 
     if nb_processes == 1:
-        single_threaded_tiling(input_file, output_folder, options)
+        single_threaded_tiling(input_file, output_folder, **options)
     else:
-        multi_threaded_tiling(input_file, output_folder, options)
+        multi_threaded_tiling(input_file, output_folder, **options)
