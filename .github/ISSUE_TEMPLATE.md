@@ -1,4 +1,5 @@
-* GDAL2Tiles as library version:
+* gdal2tiles version:
+* GDAL version:
 * Python version:
 * Operating System:
 
