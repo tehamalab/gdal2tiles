@@ -140,7 +140,7 @@ latex_elements = {
 # [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'gdal2tiles.tex',
-     u'GDAL2Tiles as library Documentation',
+     u'gdal2tiles Documentation',
      u'Tehamalab', 'manual'),
 ]
 
