@@ -14,3 +14,8 @@ History
 * Clean the source code.
 * Setup documentation
 * Setup testing environment
+
+0.1.2 (2018-05-16)
+------------------
+
+* Bug fix in ``generate_tiles()``.
