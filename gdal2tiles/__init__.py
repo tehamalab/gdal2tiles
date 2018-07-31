@@ -4,7 +4,7 @@
 
 __author__ = """Tehamalab"""
 __email__ = 'developers@tehamalab.com'
-__version__ = '0.1.2'
+__version__ = '0.1.3'
 
 
 from .gdal2tiles import *  # noqa
