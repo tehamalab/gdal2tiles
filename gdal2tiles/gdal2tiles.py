@@ -40,13 +40,19 @@
 from __future__ import print_function, division
 
 import math
-from multiprocessing import Pipe, Pool, Process, Manager
 import os
 import tempfile
 import shutil
 import sys
 from uuid import uuid4
 from xml.etree import ElementTree
+
+try:
+    # try to use billiard because it seems to works with Celery
+    # https://github.com/celery/celery/issues/1709
+    from billiard import Pipe, Pool, Process, Manager
+except ImportError:
+    from multiprocessing import Pipe, Pool, Process, Manager
 
 from osgeo import gdal
 from osgeo import osr
@@ -59,7 +65,7 @@ except Exception:
     # 'antialias' resampling is not available
     pass
 
-from .utils import recursive_attrdict
+from .utils import AttrDict
 
 
 resampling_list = ('average', 'near', 'bilinear', 'cubic', 'cubicspline', 'lanczos', 'antialias')
@@ -1166,7 +1172,7 @@ def process_options(input_file, output_folder, options={}):
 
     _options = DEFAULT_GDAL2TILES_OPTIONS.copy()
     _options.update(options)
-    options = recursive_attrdict(_options)
+    options = AttrDict(_options)
     options = options_post_processing(options, input_file, output_folder)
     return options
 
@@ -2701,18 +2707,15 @@ class GDAL2Tiles(object):
 
 
 def worker_tile_details(input_file, output_folder, options, send_pipe=None):
-    try:
-        gdal2tiles = GDAL2Tiles(input_file, output_folder, options)
-        gdal2tiles.open_input()
-        gdal2tiles.generate_metadata()
-        tile_job_info, tile_details = gdal2tiles.generate_base_tiles()
-        return_data = (tile_job_info, tile_details)
-        if send_pipe:
-            send_pipe.send(return_data)
+    gdal2tiles = GDAL2Tiles(input_file, output_folder, options)
+    gdal2tiles.open_input()
+    gdal2tiles.generate_metadata()
+    tile_job_info, tile_details = gdal2tiles.generate_base_tiles()
+    return_data = (tile_job_info, tile_details)
+    if send_pipe:
+        send_pipe.send(return_data)
 
-        return return_data
-    except Exception as e:
-        print("worker_tile_details failed ", str(e))
+    return return_data
 
 
 def progress_printer_thread(queue, nb_jobs):

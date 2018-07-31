@@ -57,6 +57,9 @@ setup(
     name='gdal2tiles',
     packages=find_packages(include=['gdal2tiles']),
     setup_requires=setup_requirements,
+    extras_require={
+        'billiard': ['billiard'],
+    },
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/tehamalab/gdal2tiles',

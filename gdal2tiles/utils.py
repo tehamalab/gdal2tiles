@@ -1,44 +1,93 @@
 # -*- coding: utf-8 -*-
 
+import warnings
 
-class AttrDict(dict):
-    """A dictionary with attribute-style access. It maps attribute access to
-    the real dictionary.  """
-    def __init__(self, init={}):
-        dict.__init__(self, init)
 
-    def __getstate__(self):
-        return self.__dict__.items()
+class AttrDict(object):
+    """
+    Helper class to provide attribute like access (read and write) to
+    dictionaries. Used to provide a convenient way to access both results and
+    nested dsl dicts.
+    """
+    def __init__(self, d={}):
+        # assign the inner dict manually to prevent __setattr__ from firing
+        super(AttrDict, self).__setattr__('_d_', d)
 
-    def __setstate__(self, items):
-        for key, val in items:
-            self.__dict__[key] = val
+    def __contains__(self, key):
+        return key in self._d_
+
+    def __nonzero__(self):
+        return bool(self._d_)
+    __bool__ = __nonzero__
+
+    def __dir__(self):
+        # introspection for auto-complete in IPython etc
+        return list(self._d_.keys())
+
+    def __eq__(self, other):
+        if isinstance(other, AttrDict):
+            return other._d_ == self._d_
+        # make sure we still equal to a dict with the same data
+        return other == self._d_
+
+    def __ne__(self, other):
+        return not self == other
 
     def __repr__(self):
-        return "%s(%s)" % (self.__class__.__name__, dict.__repr__(self))
+        r = repr(self._d_)
+        if len(r) > 60:
+            r = r[:60] + '...}'
+        return r
+
+    def __getstate__(self):
+        return (self._d_, )
+
+    def __setstate__(self, state):
+        super(AttrDict, self).__setattr__('_d_', state[0])
+
+    def __getattr__(self, attr_name):
+        try:
+            return self.__getitem__(attr_name)
+        except KeyError:
+            raise AttributeError(
+                '%r object has no attribute %r' % (self.__class__.__name__, attr_name))
+
+    def __delattr__(self, attr_name):
+        try:
+            del self._d_[attr_name]
+        except KeyError:
+            raise AttributeError(
+                '%r object has no attribute %r' % (self.__class__.__name__, attr_name))
+
+    def __getitem__(self, key):
+        return self._d_[key]
 
     def __setitem__(self, key, value):
-        return super(AttrDict, self).__setitem__(key, value)
+        self._d_[key] = value
 
-    def __getitem__(self, name):
-        return super(AttrDict, self).__getitem__(name)
+    def __delitem__(self, key):
+        del self._d_[key]
 
-    def __delitem__(self, name):
-        return super(AttrDict, self).__delitem__(name)
+    def __setattr__(self, name, value):
+        if name in self._d_ or not hasattr(self.__class__, name):
+            self._d_[name] = value
+        else:
+            # there is an attribute on the class (could be property, ..) - don't add it as field
+            super(AttrDict, self).__setattr__(name, value)
 
-    __getattr__ = __getitem__
-    __setattr__ = __setitem__
+    def __iter__(self):
+        return iter(self._d_)
+
+    def to_dict(self):
+        return self._d_
 
 
 def recursive_attrdict(obj):
-    """Walks a simple data structure, converting dictionary to AttrDict.
+    """
+    .. deprecated:: version
+
+    Walks a simple data structure, converting dictionary to AttrDict.
     Supports lists, tuples, and dictionaries.
     """
-    if isinstance(obj, dict):
-        return AttrDict(dict((str(k), recursive_attrdict(v)) for (k, v) in obj.items()))
-    elif isinstance(obj, list):
-        return list(recursive_attrdict(i) for i in obj)
-    elif isinstance(obj, tuple):
-        return tuple(recursive_attrdict(i) for i in obj)
-    else:
-        return obj
+    warnings.warn("deprecated", DeprecationWarning)
+    AttrDict(obj)
