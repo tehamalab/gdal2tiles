@@ -19,3 +19,15 @@ History
 ------------------
 
 * Bug fix in ``generate_tiles()``.
+
+
+0.1.3 (2018-07-31)
+------------------
+
+* Use billard for multiprocessing if available.
+
+
+0.1.4 (2018-08-14)
+------------------
+
+* Accept list or tuple in specifying tile generation zoom level.

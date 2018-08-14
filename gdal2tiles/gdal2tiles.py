@@ -2896,7 +2896,8 @@ def generate_tiles(input_file, output_folder, **options):
 
         ``s_srs``: The spatial reference system used for the source input data
 
-        ``zoom``: Zoom levels to render; format: [min, max], 'min-max' or zoomlevel.
+        ``zoom``: Zoom levels to render; format: `[int min, int max]`,
+            `'min-max'` or `int/str zoomlevel`.
 
         ``resume`` (bool): Resume mode. Generate only missing files.
 
