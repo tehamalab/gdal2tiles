@@ -54,7 +54,7 @@ OR
 
 .. code-block:: python
 
-    options = {'zoom': '7-9', 'resume': True}
+    options = {'zoom': (7, 9), 'resume': True}
     gdal2tiles.generate_tiles('input_file', 'output_dir/', **options)
 
 
