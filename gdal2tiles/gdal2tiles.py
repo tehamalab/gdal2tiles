@@ -1189,6 +1189,9 @@ def options_post_processing(options, input_file, output_folder):
             out_path = out_path[:-1]
         options.url += os.path.basename(out_path) + '/'
 
+    if isinstance(options.zoom, (list, tuple)) and len(options.zoom) < 2:
+        raise ValueError('Invalid zoom value')
+
     # Supported options
     if options.resampling == 'average':
         try:
@@ -1362,7 +1365,13 @@ class GDAL2Tiles(object):
         # User specified zoom levels
         self.tminz = None
         self.tmaxz = None
-        if self.options.zoom:
+        if isinstance(self.options.zoom, (list, tuple)):
+            self.tminz = self.options.zoom(0)
+            self.tmaxz = self.options.zoom(1)
+        elif isinstance(self.options.zoom, int):
+            self.tminz = self.options.zoom
+            self.tmaxz = self.tminz
+        elif self.options.zoom:
             minmax = self.options.zoom.split('-', 1)
             minmax.extend([''])
             zoom_min, zoom_max = minmax[:2]
@@ -2887,7 +2896,7 @@ def generate_tiles(input_file, output_folder, **options):
 
         ``s_srs``: The spatial reference system used for the source input data
 
-        ``zoom``: Zoom levels to render (format:'2-5' or '10').
+        ``zoom``: Zoom levels to render; format: [min, max], 'min-max' or zoomlevel.
 
         ``resume`` (bool): Resume mode. Generate only missing files.
 
