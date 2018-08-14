@@ -31,3 +31,9 @@ History
 ------------------
 
 * Accept list or tuple in specifying tile generation zoom level.
+
+
+0.1.5 (2018-08-14)
+------------------
+
+* Bug fix.

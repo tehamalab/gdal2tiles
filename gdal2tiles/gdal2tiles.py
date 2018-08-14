@@ -1366,8 +1366,8 @@ class GDAL2Tiles(object):
         self.tminz = None
         self.tmaxz = None
         if isinstance(self.options.zoom, (list, tuple)):
-            self.tminz = self.options.zoom(0)
-            self.tmaxz = self.options.zoom(1)
+            self.tminz = self.options.zoom[0]
+            self.tmaxz = self.options.zoom[1]
         elif isinstance(self.options.zoom, int):
             self.tminz = self.options.zoom
             self.tmaxz = self.tminz
