@@ -48,7 +48,7 @@ For example
 
 .. code-block:: python
 
-    gdal2tiles.generate_tiles('input_file', 'output_dir/', np_processes=2, zoom='7-9')
+    gdal2tiles.generate_tiles('input_file', 'output_dir/', nb_processes=2, zoom='7-9')
 
 OR
 
