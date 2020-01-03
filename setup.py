@@ -12,22 +12,38 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-gdal_package = 'GDAL'
-try:
-    gdal_version = subprocess.check_output(
-        'gdal-config --version',
-        stderr=subprocess.STDOUT,
-        shell=True
-    ).decode('utf-8').strip()
 
-    if gdal_version.startswith('1.10'):
-        gdal_package = gdal_package + '==1.10.0'
-    else:
-        gdal_package = '%s==%s' % (gdal_package, gdal_version)
-except subprocess.CalledProcessError:
-    gdal_version = None
+def gdal_already_installed():
+    try:
+        from osgeo import gdal  # noqa
+        return True
+    except ImportError:
+        return False
 
-requirements = [gdal_package]
+
+def get_required_gdal():
+    gdal_package = 'GDAL'
+    try:
+        gdal_version = subprocess.check_output(
+            'gdal-config --version',
+            stderr=subprocess.STDOUT,
+            shell=True
+        ).decode('utf-8').strip()
+
+        if gdal_version.startswith('1.10'):
+            gdal_package = gdal_package + '==1.10.0'
+        else:
+            gdal_package = '%s==%s' % (gdal_package, gdal_version)
+    except subprocess.CalledProcessError:
+        pass
+
+    return gdal_package
+
+
+requirements = []
+
+if not gdal_already_installed():
+    requirements.append(get_required_gdal())
 
 setup_requirements = ['pytest-runner', ]
 
