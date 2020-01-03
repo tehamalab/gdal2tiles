@@ -22,7 +22,7 @@ def gdal_already_installed():
 
 
 def get_required_gdal():
-    gdal_package = 'GDAL'
+    gdal_package = 'pygdal'
     try:
         gdal_version = subprocess.check_output(
             'gdal-config --version',
@@ -33,7 +33,7 @@ def get_required_gdal():
         if gdal_version.startswith('1.10'):
             gdal_package = gdal_package + '==1.10.0'
         else:
-            gdal_package = '%s==%s' % (gdal_package, gdal_version)
+            gdal_package = '%s==%s.*' % (gdal_package, gdal_version)
     except subprocess.CalledProcessError:
         pass
 
