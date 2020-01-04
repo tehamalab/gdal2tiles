@@ -30,10 +30,7 @@ def get_required_gdal():
             shell=True
         ).decode('utf-8').strip()
 
-        if gdal_version.startswith('1.10'):
-            gdal_package = gdal_package + '==1.10.0'
-        else:
-            gdal_package = '%s==%s.*' % (gdal_package, gdal_version)
+        gdal_package = '%s==%s.*' % (gdal_package, gdal_version)
     except subprocess.CalledProcessError:
         pass
 
