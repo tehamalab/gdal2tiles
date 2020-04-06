@@ -119,6 +119,7 @@ DEFAULT_GDAL2TILES_OPTIONS = {
     'resampling': 'average',
     's_srs': None,
     'zoom': None,
+    'tile_size': 256,
     'resume': False,
     'srcnodata': None,
     'tmscompatible': None,
@@ -493,7 +494,7 @@ class Zoomify(object):
         """Returns filename for tile with given coordinates"""
 
         tileIndex = x + y * self.tierSizeInTiles[z][0] + self.tileCountUpToTier[z]
-        return os.path.join("TileGroup%.0f" % math.floor(tileIndex / 256),
+        return os.path.join("TileGroup%.0f" % math.floor(tileIndex / self.tilesize),
                             "%s-%s-%s.%s" % (z, x, y, self.tileformat))
 
 
@@ -1331,7 +1332,7 @@ class GDAL2Tiles(object):
         self.output_folder = None
 
         # Tile format
-        self.tilesize = 256
+        self.tilesize = options.tile_size
         self.tiledriver = 'PNG'
         self.tileext = 'png'
         self.tmp_dir = tempfile.mkdtemp()
@@ -1523,7 +1524,7 @@ class GDAL2Tiles(object):
         # Calculating ranges for tiles in different zoom levels
         if self.options.profile == 'mercator':
 
-            self.mercator = GlobalMercator()
+            self.mercator = GlobalMercator(tileSize=self.tilesize)
 
             # Function which generates SWNE in LatLong for given tile
             self.tileswne = self.mercator.TileLatLonBounds
@@ -1566,7 +1567,7 @@ class GDAL2Tiles(object):
 
         if self.options.profile == 'geodetic':
 
-            self.geodetic = GlobalGeodetic(self.options.tmscompatible)
+            self.geodetic = GlobalGeodetic(self.options.tmscompatible, tileSize=self.tilesize)
 
             # Function which generates SWNE in LatLong for given tile
             self.tileswne = self.geodetic.TileLatLonBounds
@@ -2768,10 +2769,10 @@ class ProgressBar(object):
 
 def get_tile_swne(tile_job_info, options):
     if options.profile == 'mercator':
-        mercator = GlobalMercator()
+        mercator = GlobalMercator(tileSize=options.tile_size)
         tile_swne = mercator.TileLatLonBounds
     elif options.profile == 'geodetic':
-        geodetic = GlobalGeodetic(options.tmscompatible)
+        geodetic = GlobalGeodetic(options.tmscompatible, tileSize=options.tile_size)
         tile_swne = geodetic.TileLatLonBounds
     elif options.profile == 'raster':
         srs4326 = osr.SpatialReference()
@@ -2898,6 +2899,8 @@ def generate_tiles(input_file, output_folder, **options):
 
         ``zoom``: Zoom levels to render; format: `[int min, int max]`,
             `'min-max'` or `int/str zoomlevel`.
+
+        ``tile_size`` (int): Size of tiles to render - default 256
 
         ``resume`` (bool): Resume mode. Generate only missing files.
 
