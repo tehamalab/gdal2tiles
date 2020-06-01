@@ -85,6 +85,8 @@ options:
     ``zoom``: Zoom levels to render; format: `[int min, int max]`,
             `'min-max'` or `int/str zoomlevel`.
 
+    ``tile_size`` (int): Size of tiles to render - default 256
+
     ``resume`` (bool): Resume mode. Generate only missing files.
 
     ``srcnodata``: NODATA transparency value to assign to the input data
