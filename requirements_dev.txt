@@ -8,7 +8,8 @@ coverage
 Sphinx
 twine
 
-xmltodict
-
 pytest
 pytest-runner
+
+xmltodict
+Pillow
