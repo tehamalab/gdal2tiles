@@ -2,6 +2,14 @@
 History
 =======
 
+0.1.7 (2020-06-03)
+------------------
+
+* Add tile_size option on `generate_tiles` to allow custom tile sizes.
+* Small documentation updates.
+* Improve basic tests and test against multiple versions of GDAL.
+
+
 0.1.6 (2020-01-03)
 ------------------
 
