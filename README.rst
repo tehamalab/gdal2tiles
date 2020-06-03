@@ -67,54 +67,54 @@ In general
 
 Arguments:
 
-    ``input_file`` (str): Path to input file.
+    :input_file (str): Path to input file.
 
-    ``output_folder`` (str): Path to output folder.
+    :output_folder (str): Path to output folder.
 
-    ``options``: Tile generation options.
+    :options: Tile generation options.
 
-options:
-    ``profile`` (str): Tile cutting profile (mercator,geodetic,raster) - default
+Options:
+    :profile (str): Tile cutting profile (mercator,geodetic,raster) - default
         'mercator' (Google Maps compatible)
 
-    ``resampling`` (str): Resampling method (average,near,bilinear,cubic,cubicsp
+    :resampling (str): Resampling method (average,near,bilinear,cubic,cubicsp
         line,lanczos,antialias) - default 'average'
 
-    ``s_srs``: The spatial reference system used for the source input data
+    :s_srs: The spatial reference system used for the source input data
 
-    ``zoom``: Zoom levels to render; format: `[int min, int max]`,
-            `'min-max'` or `int/str zoomlevel`.
+    :zoom: Zoom levels to render; format: '[int min, int max]',
+        'min-max' or 'int/str zoomlevel'.
 
-    ``tile_size`` (int): Size of tiles to render - default 256
+    :tile_size (int): Size of tiles to render - default 256
 
-    ``resume`` (bool): Resume mode. Generate only missing files.
+    :resume (bool): Resume mode. Generate only missing files.
 
-    ``srcnodata``: NODATA transparency value to assign to the input data
+    :srcnodata: NODATA transparency value to assign to the input data
 
-    ``tmscompatible`` (bool): When using the geodetic profile, specifies the base
+    :tmscompatible (bool): When using the geodetic profile, specifies the base
         resolution as 0.703125 or 2 tiles at zoom level 0.
 
-    ``verbose`` (bool): Print status messages to stdout
+    :verbose (bool): Print status messages to stdout
 
-    ``kml`` (bool): Generate KML for Google Earth - default for 'geodetic'
+    :kml (bool): Generate KML for Google Earth - default for 'geodetic'
                     profile and 'raster' in EPSG:4326. For a dataset with
                     different projection use with caution!
 
-    ``url`` (str): URL address where the generated tiles are going to be published
+    :url (str): URL address where the generated tiles are going to be published
 
-    ``webviewer`` (str): Web viewer to generate (all,google,openlayers,none) -
+    :webviewer (str): Web viewer to generate (all,google,openlayers,none) -
         default 'all'
 
-    ``title`` (str): Title of the map
+    :title (str): Title of the map
 
-    ``copyright`` (str): Copyright for the map
+    :copyright (str): Copyright for the map
 
-    ``googlekey`` (str): Google Maps API key from
+    :googlekey (str): Google Maps API key from
         http://code.google.com/apis/maps/signup.html
 
-    ``bingkey`` (str): Bing Maps API key from https://www.bingmapsportal.com/
+    :bingkey (str): Bing Maps API key from https://www.bingmapsportal.com/
 
-    ``nb_processes``: Number of processes to use for tiling.
+    :nb_processes (int): Number of processes to use for tiling.
 
 
 .. _gdal2tiles.py: http://www.gdal.org/gdal2tiles.html
