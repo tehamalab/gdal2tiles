@@ -1,5 +1,6 @@
-gdal2tiles
-==========
+=======
+Modules
+=======
 
 .. toctree::
    :maxdepth: 4
