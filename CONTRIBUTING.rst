@@ -68,7 +68,7 @@ Ready to contribute? Here's how to set up `gdal2tiles` for local development.
 
     $ mkvirtualenv gdal2tiles
     $ cd gdal2tiles/
-    $ python setup.py develop
+    $ pip install -e .
 
 4. Create a branch for local development::
 
@@ -83,7 +83,10 @@ Ready to contribute? Here's how to set up `gdal2tiles` for local development.
     $ python setup.py test or py.test
     $ tox
 
-   To get flake8 and tox, just pip install them into your virtualenv.
+   To get flake8, tox and other development dependancies you can install them
+   on your virtual environment using pip.
+
+    $  pip istall -r requirements_dev.txt
 
 6. Commit your changes and push your branch to GitHub::
 
