@@ -66,12 +66,12 @@ In general
 
 
 Arguments:
+    ``input_file`` (str): Path to input file.
 
-    :input_file (str): Path to input file.
+    ``output_folder`` (str): Path to output folder.
 
-    :output_folder (str): Path to output folder.
+    ``options``: Tile generation options.
 
-    :options: Tile generation options.
 
 Options:
     :profile (str): Tile cutting profile (mercator,geodetic,raster) - default
