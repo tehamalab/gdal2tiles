@@ -2,6 +2,13 @@
 History
 =======
 
+0.1.8 (2020-09-23)
+------------------
+
+* Fix AttributeError ``gdal2tiles.generate_tiles(..., profile='raster', kml=True)``.
+  Fix `issue #14 <https://github.com/tehamalab/gdal2tiles/issues/14>`_.
+
+
 0.1.7 (2020-06-03)
 ------------------
 
