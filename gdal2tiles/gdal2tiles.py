@@ -2784,10 +2784,10 @@ def get_tile_swne(tile_job_info, options):
 
             def rastertileswne(x, y, z):
                 pixelsizex = (2 ** (tile_job_info.tmaxz - z) * tile_job_info.out_geo_trans[1])
-                west = tile_job_info.out_geo_trans[0] + x * tile_job_info.tilesize * pixelsizex
-                east = west + tile_job_info.tilesize * pixelsizex
-                south = tile_job_info.ominy + y * tile_job_info.tilesize * pixelsizex
-                north = south + tile_job_info.tilesize * pixelsizex
+                west = tile_job_info.out_geo_trans[0] + x * tile_job_info.tile_size * pixelsizex
+                east = west + tile_job_info.tile_size * pixelsizex
+                south = tile_job_info.ominy + y * tile_job_info.tile_size * pixelsizex
+                north = south + tile_job_info.tile_size * pixelsizex
                 if not tile_job_info.is_epsg_4326:
                     # Transformation to EPSG:4326 (WGS84 datum)
                     west, south = ct.TransformPoint(west, south)[:2]

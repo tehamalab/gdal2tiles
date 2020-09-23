@@ -39,3 +39,13 @@ def test_tile_size(data, tmp_path):
             tile_width, tile_height = tile_image.size
             assert tile_width == size
             assert tile_height == size
+
+
+def test_kml(data, tmp_path):
+    input_file = data / 'simple.tiff'
+    output_dir = tmp_path / 'tiles'
+    output_dir.mkdir()
+
+    generate_tiles(str(input_file), str(output_dir), profile='raster', kml=True)
+
+    assert (output_dir / 'doc.kml').exists()
