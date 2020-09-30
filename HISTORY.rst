@@ -5,7 +5,8 @@ History
 0.1.9 (2020-xx-xx)
 ------------------
 
-* Ensure ``tmscompatible`` option in tile generation and calculation is bool instance.
+* Enabling GDAL Exceptions.
+* Ensuring ``tmscompatible`` option in tile generation and calculation is bool instance.
 
 
 0.1.8 (2020-09-23)

@@ -133,6 +133,9 @@ DEFAULT_GDAL2TILES_OPTIONS = {
 }
 
 
+gdal.UseExceptions()
+
+
 class GlobalMercator(object):
     r"""
     TMS Global Mercator Profile
