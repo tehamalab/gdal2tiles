@@ -2,7 +2,7 @@
 History
 =======
 
-0.1.9 (2020-xx-xx)
+0.1.9 (2020-09-30)
 ------------------
 
 * Enabling GDAL Exceptions.
