@@ -122,7 +122,7 @@ DEFAULT_GDAL2TILES_OPTIONS = {
     'tile_size': 256,
     'resume': False,
     'srcnodata': None,
-    'tmscompatible': None,
+    'tmscompatible': False,
     'quiet': False,
     'kml': False,
     'webviewer': 'all',
@@ -385,7 +385,7 @@ class GlobalGeodetic(object):
 
     def __init__(self, tmscompatible, tileSize=256):
         self.tileSize = tileSize
-        if tmscompatible is not None:
+        if tmscompatible is True:
             # Defaults the resolution factor to 0.703125 (2 tiles @ level 0)
             # Adhers to OSGeo TMS spec
             # http://wiki.osgeo.org/wiki/Tile_Map_Service_Specification#global-geodetic
